@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* Define o visual escuro e as cores base do dashboard. */
+:root { --bg:#080d14; --surface:#111923; --line:#26313e; --text:#f4f7fb; --muted:#8995a4; --blue:#1885ff; }
+* { box-sizing: border-box; }
+/* Cria o fundo escuro com um brilho sutil no topo da página. */
+body { margin:0; min-width:320px; color:var(--text); background:radial-gradient(circle at 80% 0%,#172536 0,var(--bg) 38%); font-family:'DM Sans',sans-serif; }
+a { color:inherit; }
+/* Divide a tela entre a barra lateral e o conteúdo principal. */
+.app-shell { display:flex; min-height:100vh; }
+/* Mantém a navegação fixa visualmente no lado esquerdo. */
+.sidebar { width:220px; flex:0 0 220px; display:flex; flex-direction:column; padding:27px 18px 22px; border-right:1px solid #202b37; background:rgba(8,13,20,.78); }
+.brand { display:flex; align-items:center; gap:9px; margin:0 8px 38px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; }
+.brand-mark { width:21px; height:21px; display:grid; place-items:center; border:2px solid #258bff; border-radius:50%; color:#68b1ff; font-size:14px; }
+.menu-button { margin-left:auto; padding:0; border:0; color:var(--muted); background:transparent; font-size:19px; cursor:pointer; }
+.main-nav { display:grid; gap:8px; }
+.nav-item { display:flex; align-items:center; gap:13px; padding:11px 12px; border-radius:7px; color:#b7c0cb; text-decoration:none; font-size:13px; }
+.nav-item span { width:17px; color:#9ba8b6; text-align:center; font-size:16px; }
+.nav-item:hover,.nav-item.active { color:white; background:linear-gradient(100deg,#126ee4,#0b55b8); }
+.nav-item.active span { color:white; }
+/* Empurra o seletor de modo escuro para o rodapé do menu. */
+.sidebar-footer { display:flex; align-items:center; gap:8px; margin-top:auto; padding:14px 7px 0; border:0; border-top:1px solid #202b37; color:#b7c0cb; background:transparent; font:12px 'DM Sans',sans-serif; text-align:left; cursor:pointer; }
+.toggle { width:25px; height:15px; display:inline-flex; justify-content:flex-end; margin-left:auto; padding:2px; border-radius:12px; background:var(--blue); }
+.toggle span { width:11px; height:11px; border-radius:50%; background:white; }
+.main-content { width:100%; max-width:1280px; margin:0 auto; padding:57px 46px 42px; }
+/* Alinha o título do dashboard e o botão de nova tarefa. */
+.page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px; }
+h1,h2,p { margin:0; } h1 { font:600 27px 'Space Grotesk',sans-serif; } .subtitle { margin-top:5px; color:var(--muted); font-size:13px; }
+.primary-button,.task-form button { display:inline-flex; align-items:center; gap:6px; border:0; border-radius:7px; color:white; background:var(--blue); box-shadow:0 8px 20px rgba(13,117,240,.22); font:600 13px 'DM Sans',sans-serif; text-decoration:none; cursor:pointer; }
+.primary-button { padding:10px 15px; } .primary-button span { font-size:19px; line-height:12px; } button.primary-button { appearance:none; }
+/* Organiza os quatro cartões de resumo em uma linha. */
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }
+.stat-card { display:flex; align-items:center; gap:15px; min-height:83px; padding:15px 18px; border:1px solid var(--line); border-radius:8px; background:linear-gradient(135deg,rgba(24,34,46,.9),rgba(13,20,29,.9)); }
+.stat-icon { display:grid; place-items:center; width:35px; height:35px; font-size:27px; } .blue .stat-icon{color:#1685ff}.green .stat-icon{color:#19d593}.purple .stat-icon{color:#b33cff}.orange .stat-icon{color:#ffb10b}
+.stat-card div { display:grid; gap:3px; } .stat-card strong { font:500 24px 'Space Grotesk',sans-serif; } .stat-card div span { color:#cad0d8; font-size:11px; }
+/* Reserva mais espaço para a lista e coloca o gráfico ao lado dela. */
+.dashboard-grid { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr); gap:16px; }
+.panel,.new-task-panel { border:1px solid var(--line); border-radius:8px; background:rgba(16,24,34,.86); } .panel { min-height:265px; padding:17px 16px; }
+.panel-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; } .panel-heading h2,.new-task-panel h2 { font:600 15px 'Space Grotesk',sans-serif; } .panel-dots { color:#596675; letter-spacing:2px; font-size:11px; }
+.task-list { display:grid; gap:7px; padding:0; margin:0; list-style:none; }
+/* Cada tarefa tem indicador, texto, status e ações. */
+.task-row { display:grid; grid-template-columns:18px 1fr auto auto; align-items:center; gap:9px; min-height:39px; padding:5px 8px; border:1px solid #202c39; border-radius:7px; background:rgba(22,31,42,.7); }
+.task-row.done { opacity:.72; } .check { width:14px; height:14px; border:1px solid #425365; border-radius:50%; color:#06150f; font-size:10px; text-align:center; } .check.checked { border-color:#16cb91; background:#16cb91; }
+.task-copy { display:grid; gap:2px; min-width:0; } .task-copy strong,.task-copy small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .task-copy strong { color:#edf1f5; font-size:12px; font-weight:500; } .task-copy small { color:var(--muted); font-size:10px; }
+.priority { padding:4px 8px; border-radius:10px; color:#ffd95e; background:rgba(138,112,0,.28); font-size:10px; white-space:nowrap; } .done .priority { color:#48dcac; background:rgba(0,138,95,.22); }
+.actions { display:flex; gap:7px; } .actions a { color:#8795a5; font-size:18px; line-height:16px; text-decoration:none; } .actions .start-link { color:#ffb10b; } .actions .complete-link { color:#21d094; } .actions .delete:hover { color:#ff6472; }
+.empty { padding:32px 0; color:var(--muted); text-align:center; font-size:13px; }
+/* Desenha o gráfico circular usando apenas CSS, sem biblioteca externa. */
+.chart-area { display:flex; align-items:center; justify-content:space-around; min-height:190px; } .donut { display:grid; place-content:center; width:136px; height:136px; border-radius:50%; background:conic-gradient(#1484ff 0 40%,#893bd2 40% 70%,#1bb88d 70% 90%,#697483 90% 100%); text-align:center; } .donut::before { content:''; grid-area:1/1; width:86px; height:86px; margin:auto; border-radius:50%; background:#121b26; } .donut span,.donut small { z-index:1; grid-area:1/1; align-self:center; } .donut span { margin-top:-8px; font:600 21px 'Space Grotesk'; } .donut small { margin-top:25px; color:var(--muted); font-size:9px; }
+.legend { display:grid; gap:12px; color:#d6dbe2; font-size:11px; } .legend div { display:grid; grid-template-columns:9px 1fr auto; align-items:center; gap:7px; min-width:110px; } .legend i { width:8px; height:8px; border-radius:2px; } .legend b { font-weight:500; } .legend-blue{background:#1484ff}.legend-purple{background:#893bd2}.legend-green{background:#1bb88d}.legend-gray{background:#697483}
+/* Adapta o formulário para telas estreitas e evita conteúdo cortado. */
+.new-task-panel { display:flex; justify-content:space-between; align-items:center; gap:24px; margin-top:16px; padding:18px 20px; } .new-task-panel p { margin-top:5px; color:var(--muted); font-size:11px; } .task-form { display:flex; gap:8px; } .task-form input,.task-form select { min-width:135px; padding:10px 11px; border:1px solid #2a3847; border-radius:6px; outline:none; color:white; background:#0d151f; font:12px 'DM Sans'; } .task-form input:focus,.task-form select:focus { border-color:var(--blue); } .task-form button { padding:10px 14px; }
+/* Exibe uma área real quando o usuário abre Configurações. */
+.settings-panel { margin-top:16px; padding:18px 20px; border:1px solid var(--line); border-radius:8px; background:rgba(16,24,34,.86); } .settings-panel h2 { font:600 15px 'Space Grotesk',sans-serif; } .settings-panel p { margin-top:6px; color:var(--muted); font-size:12px; }
+/* Cores alternativas usadas quando o usuário escolhe o tema claro. */
+.light-theme { --bg:#eef3f8; --surface:#fff; --line:#d6dee8; --text:#172333; --muted:#5f6e7d; background:linear-gradient(135deg,#f7fafc,#e6edf5); } .light-theme .sidebar,.light-theme .panel,.light-theme .new-task-panel,.light-theme .settings-panel { background:rgba(255,255,255,.9); } .light-theme .task-row { background:#f7f9fb; border-color:#dce4ed; } .light-theme .task-copy strong { color:#172333; } .light-theme .task-form input,.light-theme .task-form select { color:#172333; background:#fff; border-color:#cbd6e2; }
+/* Em tablets, a barra lateral reduz para mostrar apenas os ícones. */
+@media (max-width:850px) { .sidebar { width:70px; flex-basis:70px; padding:22px 10px; } .sidebar.menu-open { width:220px; flex-basis:220px; } .brand { margin:0 auto 32px; } .sidebar.menu-open .brand { margin-left:8px; margin-right:8px; } .brand>span:last-of-type,.menu-button,.nav-item:not(.active)::after,.nav-item { font-size:0; } .sidebar.menu-open .brand>span:last-of-type,.sidebar.menu-open .menu-button,.sidebar.menu-open .nav-item { font-size:13px; } .nav-item { justify-content:center; padding:12px 5px; } .nav-item span { font-size:17px; } .sidebar-footer { justify-content:center; padding:14px 0 0; font-size:0; } .sidebar.menu-open .sidebar-footer { justify-content:flex-start; font-size:12px; padding-left:7px; } .sidebar-footer>span:first-child { font-size:16px; } .toggle { margin:0; } .sidebar.menu-open .toggle { margin-left:auto; } .main-content { padding:40px 24px; } }
+/* Em celulares, os cartões viram duas colunas e os painéis uma coluna. */
+@media (max-width:650px) { .main-content { padding:28px 15px; } .page-header { align-items:center; } h1 { font-size:23px; } .stats-grid { grid-template-columns:repeat(2,1fr); } .dashboard-grid { grid-template-columns:1fr; } .new-task-panel { display:block; } .task-form { flex-wrap:wrap; margin-top:15px; } .task-form input { flex:1 1 130px; min-width:0; } .chart-area { justify-content:space-evenly; } }

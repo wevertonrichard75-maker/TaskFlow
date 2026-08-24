@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- Define que o documento usa HTML5 e está escrito em português. -->
+<html lang="pt-BR">
+<head>
+    <!-- Permite caracteres especiais e ajusta a página para telas menores. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Estrutura principal do dashboard com menu lateral e conteúdo. -->
+    <div class="app-shell">
+        <!-- O menu lateral concentra a identidade e os atalhos da aplicação. -->
+        <aside class="sidebar">
+            <div class="brand"><span class="brand-mark">✓</span><span>TaskFlow</span><button class="menu-button" type="button" aria-label="Abrir menu">☰</button></div>
+            <!-- Cada link aponta para uma área do dashboard ou para uma rota Flask. -->
+            <nav class="main-nav" aria-label="Navegação principal">
+                <a class="nav-item active" href="{{ url_for('index') }}"><span>⌂</span> Dashboard</a>
+                <a class="nav-item" href="#recent-tasks"><span>▣</span> Tarefas</a>
+                <a class="nav-item" href="#categories"><span>□</span> Categorias</a>
+                <a class="nav-item" href="#overview"><span>▥</span> Estatísticas</a>
+                <a class="nav-item" href="#settings"><span>⚙</span> Configurações</a>
+            </nav>
+            <!-- Este botão alterna entre o tema escuro e o tema claro. -->
+            <button class="sidebar-footer theme-toggle" id="theme-toggle" type="button" aria-pressed="false"><span>☾</span> Modo escuro <span class="toggle"><span></span></span></button>
+        </aside>
+        <!-- Todo o conteúdo que muda conforme as tarefas fica nesta área. -->
+        <main class="main-content">
+            <header class="page-header"><div><h1>Dashboard</h1><p class="subtitle">Visão geral das suas tarefas</p></div><button class="primary-button" id="new-task-button" type="button"><span>＋</span> Nova tarefa</button></header>
+            <!-- Cartões com os totais calculados pelo banco de dados. -->
+            <!-- Os filtros do Jinja contam os registros recebidos do banco. -->
+            <section class="stats-grid" id="overview" aria-label="Resumo das tarefas">
+                <article class="stat-card blue"><span class="stat-icon">▤</span><div><strong>{{ total }}</strong><span>Total de tarefas</span></div></article>
+                <article class="stat-card green"><span class="stat-icon">✓</span><div><strong>{{ completed }}</strong><span>Concluídas</span></div></article>
+                <article class="stat-card purple"><span class="stat-icon">◷</span><div><strong>{{ pending }}</strong><span>Pendentes</span></div></article>
+                <article class="stat-card orange"><span class="stat-icon">⚑</span><div><strong>{{ in_progress }}</strong><span>Em andamento</span></div></article>
+            </section>
+            <section class="dashboard-grid">
+                <!-- O laço abaixo cria uma linha visual para cada tarefa encontrada. -->
+                <div class="panel recent-panel" id="recent-tasks"><div class="panel-heading"><h2>Tarefas recentes</h2><span class="panel-dots">•••</span></div><ul class="task-list">
+            {% for task in tasks %}
+                    <!-- Cada linha preserva as ações de concluir e excluir. -->
+                    <li class="task-row {% if task['status'] == 'completed' %}done{% endif %}"><span class="check {% if task['status'] == 'completed' %}checked{% endif %}">{% if task['status'] == 'completed' %}✓{% endif %}</span><div class="task-copy"><strong>{{ task['title'] }}</strong>{% if task['description'] %}<small>{{ task['description'] }}</small>{% endif %}<small>{{ task['category'] }}</small></div><span class="priority">{{ task['priority'] }} · {% if task['status'] == 'completed' %}Concluída{% elif task['status'] == 'in_progress' %}Em andamento{% else %}Pendente{% endif %}</span><div class="actions">{% if task['status'] == 'pending' %}<a class="start-link" href="{{ url_for('start_task', task_id=task['id']) }}" title="Iniciar tarefa">▶</a>{% elif task['status'] == 'in_progress' %}<a class="complete-link" href="{{ url_for('complete_task', task_id=task['id']) }}" title="Concluir">✓</a>{% endif %}<a class="delete" href="{{ url_for('delete_task', task_id=task['id']) }}" title="Excluir">×</a></div></li>
+            {% else %}
+                    <!-- Mostra uma mensagem quando o banco não possui tarefas. --><li class="empty">Nenhuma tarefa cadastrada.</li>
+            {% endfor %}
+                </ul></div>
+                <!-- O gráfico usa CSS e a legenda explica as cores apresentadas. -->
+                <div class="panel category-panel" id="categories"><div class="panel-heading"><h2>Tarefas por categoria</h2><span class="panel-dots">•••</span></div><div class="chart-area"><div class="donut"><span>{{ total }}</span><small>tarefas</small></div><div class="legend"><div><i class="legend-blue"></i> Estudos <b>{{ categories.get('Estudos', 0) }}</b></div><div><i class="legend-purple"></i> Projetos <b>{{ categories.get('Projetos', 0) }}</b></div><div><i class="legend-green"></i> Pessoal <b>{{ categories.get('Pessoal', 0) }}</b></div><div><i class="legend-gray"></i> Outros <b>{{ categories.get('Outros', 0) }}</b></div></div></div></div>
+            </section>
+            <!-- Formulário para cadastrar novas tarefas. -->
+            <!-- O formulário envia title e description para a rota /add via POST. -->
+            <section class="new-task-panel" id="new-task"><div><h2>Adicionar tarefa</h2><p>Crie uma nova tarefa para acompanhar seu progresso.</p></div><form method="POST" action="{{ url_for('add_task') }}" class="task-form"><input type="text" name="title" placeholder="Título da tarefa" required><input type="text" name="description" placeholder="Descrição (opcional)"><select name="category" aria-label="Categoria"><option>Estudos</option><option>Projetos</option><option>Pessoal</option><option selected>Outros</option></select><select name="priority" aria-label="Prioridade"><option>Baixa</option><option selected>Média</option><option>Alta</option></select><button type="submit">Adicionar</button></form></section>
+            <!-- Área ligada ao item Configurações do menu lateral. -->
+            <section class="settings-panel" id="settings"><h2>Configurações</h2><p>Personalize a aparência da sua área de tarefas usando o controle de tema no menu lateral.</p></section>
+        </main>
+    </div>
+    <!-- Carrega os comportamentos dos botões depois que o HTML foi montado. -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
